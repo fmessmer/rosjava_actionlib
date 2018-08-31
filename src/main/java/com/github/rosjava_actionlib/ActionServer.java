@@ -144,7 +144,7 @@ public class ActionServer<T_ACTION_GOAL extends Message,
             public void run() {
                 sendStatusTick();
             }
-        }, 2000, 1000);
+        }, 2000, 200); //default status_frequency is 5Hz for python and cpp
     }
 
     /**
