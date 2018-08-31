@@ -320,6 +320,27 @@ public class ActionServer<T_ACTION_GOAL extends Message,
     }
 
     /**
+     * Express a preempted event for this goal. The state of the goal will be updated.
+     */
+    public void setPreempt(String goalIdString) {
+        try {
+            goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.CANCEL_REQUEST);
+            goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.CANCEL);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * Express an aborted event for this goal. The state of the goal will be updated.
+     */
+    public void setAbort(String goalIdString) {
+        try {
+            goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.ABORT);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * Set goal ID and state information to the goal status message.
      *
      * @param gstat     GoalStatus message.
