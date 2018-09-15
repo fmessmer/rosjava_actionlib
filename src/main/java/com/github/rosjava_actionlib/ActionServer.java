@@ -255,12 +255,20 @@ public class ActionServer<T_ACTION_GOAL extends Message,
         GoalStatus goalStatus;
         Vector<GoalStatus> goalStatusList = new Vector<GoalStatus>();
 
-        for (ServerGoal sg : goalTracker.values()) {
-            goalStatus = node.getTopicMessageFactory().newFromType(GoalStatus._TYPE);
-            goalStatus.setGoalId(getGoalId(sg.goal));
-            goalStatus.setStatus((byte) sg.state.getState());
-            goalStatusList.add(goalStatus);
+        try {
+            for(java.util.Iterator<ServerGoal> sgIterator = goalTracker.values().iterator(); sgIterator.hasNext();) {
+                ServerGoal sg = sgIterator.next();
+                goalStatus = node.getTopicMessageFactory().newFromType(GoalStatus._TYPE);
+                goalStatus.setGoalId(getGoalId(sg.goal));
+                goalStatus.setStatus((byte) sg.state.getState());
+                goalStatusList.add(goalStatus);
+            }
+        } catch (java.util.ConcurrentModificationException exception) {
+            exception.printStackTrace(System.out);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace(System.out);
         }
+
         status.setStatusList(goalStatusList);
         sendStatus(status);
     }
@@ -316,6 +324,7 @@ public class ActionServer<T_ACTION_GOAL extends Message,
         try {
             goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.SUCCEED);
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 
@@ -327,6 +336,7 @@ public class ActionServer<T_ACTION_GOAL extends Message,
             goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.CANCEL_REQUEST);
             goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.CANCEL);
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 
@@ -337,6 +347,7 @@ public class ActionServer<T_ACTION_GOAL extends Message,
         try {
             goalTracker.get(goalIdString).state.transition(ServerStateMachine.Events.ABORT);
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 
@@ -353,6 +364,7 @@ public class ActionServer<T_ACTION_GOAL extends Message,
             gstat.setGoalId(getGoalId(serverGoal.goal));
             gstat.setStatus((byte) serverGoal.state.getState());
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 
