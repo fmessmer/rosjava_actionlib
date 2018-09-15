@@ -254,6 +254,6 @@ public class ActionGoal<T_ACTION_GOAL extends Message> {
     }
 
     public boolean equalId(ActionGoal ag) {
-        return (this.getGoalId() == ag.getGoalId());
+        return (this.getGoalId().equals(ag.getGoalId()));
     }
 }

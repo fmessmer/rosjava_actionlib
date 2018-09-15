@@ -108,7 +108,7 @@ public class ActionClient<T_ACTION_GOAL extends Message,
      */
     public ActionFuture<T_ACTION_GOAL, T_ACTION_FEEDBACK, T_ACTION_RESULT> sendGoal(T_ACTION_GOAL agMessage, String id) {
         GoalID gid = getGoalId(agMessage);
-        if (id == "") {
+        if (id.equals("")) {
             goalIdGenerator.generateID(gid);
         } else {
             gid.setId(id);
