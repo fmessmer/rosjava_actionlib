@@ -16,7 +16,12 @@
 
 
 buildscript {
-  apply from: "https://github.com/CentralLabFacilities/rosjava_bootstrap/raw/clf/buildscript.gradle"
+    try{
+      apply from: "https://raw.githubusercontent.com/mojin-robotics/rosjava_bootstrap/kinetic/buildscript.gradle"
+    } catch (all) {
+      //local copy of rosjava_bootstrap buildscript.gradle
+      apply from: "buildscript.gradle"
+    }
 }
 
 plugins {
